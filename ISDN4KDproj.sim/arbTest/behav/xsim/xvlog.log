@@ -1,0 +1,8 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/FPGA/ISDN4KDproj/ISDN4KDproj.srcs/sources_1/new/arbiter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module arbiter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/FPGA/ISDN4KDproj/ISDN4KDproj.srcs/sources_1/new/spiGen.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module spiGen
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/FPGA/ISDN4KDproj/ISDN4KDproj.srcs/sources_1/new/systemTop.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module systemTop
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/FPGA/ISDN4KDproj/ISDN4KDproj.sim/arbTest/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl

@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Webtalk v2019.2 (64-bit)
+# SW Build 2708876 on Wed Nov  6 21:40:23 MST 2019
+# IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
+# Start of session at: Mon Jan  6 00:25:34 2020
+# Process ID: 3772
+# Current directory: C:/FPGA/ISDN4KDproj/ISDN4KDproj.sim/arbTest/behav/xsim
+# Command line: wbtcv.exe -mode batch -source C:/FPGA/ISDN4KDproj/ISDN4KDproj.sim/arbTest/behav/xsim/xsim.dir/systemTop_behav/webtalk/xsim_webtalk.tcl -notrace
+# Log file: C:/FPGA/ISDN4KDproj/ISDN4KDproj.sim/arbTest/behav/xsim/webtalk.log
+# Journal file: C:/FPGA/ISDN4KDproj/ISDN4KDproj.sim/arbTest/behav/xsim\webtalk.jou
+#-----------------------------------------------------------
+source C:/FPGA/ISDN4KDproj/ISDN4KDproj.sim/arbTest/behav/xsim/xsim.dir/systemTop_behav/webtalk/xsim_webtalk.tcl -notrace
