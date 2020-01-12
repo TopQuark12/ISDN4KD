@@ -21,6 +21,19 @@
 
 
 module mux(
-
-    );
+    input wire [1:0] en,
+    input wire [1:0] muxIn,
+    output reg muxOut
+);
+    
+    always @ (en, muxIn) begin
+    
+        case (en)
+            2'b01   : muxOut = muxIn[0];
+            2'b10   : muxOut = muxIn[1];
+            default : muxOut = 0;
+        endcase
+    
+    end       
+    
 endmodule

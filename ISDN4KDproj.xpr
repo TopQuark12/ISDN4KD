@@ -74,15 +74,16 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/new/spiGen.v">
+      <File Path="$PSRCDIR/sources_1/new/systemTop.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/new/systemTop.v">
+      <File Path="$PSRCDIR/sources_1/new/spiGen.v">
         <FileInfo>
+          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -113,6 +114,7 @@
       </Config>
     </FileSet>
     <FileSet Name="arbTest" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/arbTest">
+      <Filter Type="Srcs"/>
       <File Path="$PSRCDIR/sources_1/new/arbiter_tb.v">
         <FileInfo>
           <Attr Name="AutoDisabled" Val="1"/>
@@ -133,6 +135,7 @@
       </Config>
     </FileSet>
     <FileSet Name="arbiterTest" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/arbiterTest">
+      <Filter Type="Srcs"/>
       <File Path="$PSRCDIR/sources_1/new/arbiter.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
