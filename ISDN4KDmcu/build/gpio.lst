@@ -1,0 +1,262 @@
+ARM GAS  C:\Users\Alex\AppData\Local\Temp\ccpdldOp.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 6
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"gpio.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.MX_GPIO_Init,"ax",%progbits
+  16              		.align	1
+  17              		.global	MX_GPIO_Init
+  18              		.arch armv7-m
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu softvfp
+  24              	MX_GPIO_Init:
+  25              	.LFB65:
+  26              		.file 1 "Src/gpio.c"
+   1:Src/gpio.c    **** /**
+   2:Src/gpio.c    ****   ******************************************************************************
+   3:Src/gpio.c    ****   * File Name          : gpio.c
+   4:Src/gpio.c    ****   * Description        : This file provides code for the configuration
+   5:Src/gpio.c    ****   *                      of all used GPIO pins.
+   6:Src/gpio.c    ****   ******************************************************************************
+   7:Src/gpio.c    ****   * @attention
+   8:Src/gpio.c    ****   *
+   9:Src/gpio.c    ****   * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  10:Src/gpio.c    ****   * All rights reserved.</center></h2>
+  11:Src/gpio.c    ****   *
+  12:Src/gpio.c    ****   * This software component is licensed by ST under BSD 3-Clause license,
+  13:Src/gpio.c    ****   * the "License"; You may not use this file except in compliance with the
+  14:Src/gpio.c    ****   * License. You may obtain a copy of the License at:
+  15:Src/gpio.c    ****   *                        opensource.org/licenses/BSD-3-Clause
+  16:Src/gpio.c    ****   *
+  17:Src/gpio.c    ****   ******************************************************************************
+  18:Src/gpio.c    ****   */
+  19:Src/gpio.c    **** 
+  20:Src/gpio.c    **** /* Includes ------------------------------------------------------------------*/
+  21:Src/gpio.c    **** #include "gpio.h"
+  22:Src/gpio.c    **** /* USER CODE BEGIN 0 */
+  23:Src/gpio.c    **** 
+  24:Src/gpio.c    **** /* USER CODE END 0 */
+  25:Src/gpio.c    **** 
+  26:Src/gpio.c    **** /*----------------------------------------------------------------------------*/
+  27:Src/gpio.c    **** /* Configure GPIO                                                             */
+  28:Src/gpio.c    **** /*----------------------------------------------------------------------------*/
+  29:Src/gpio.c    **** /* USER CODE BEGIN 1 */
+  30:Src/gpio.c    **** 
+  31:Src/gpio.c    **** /* USER CODE END 1 */
+  32:Src/gpio.c    **** 
+ARM GAS  C:\Users\Alex\AppData\Local\Temp\ccpdldOp.s 			page 2
+
+
+  33:Src/gpio.c    **** /** Configure pins as 
+  34:Src/gpio.c    ****         * Analog 
+  35:Src/gpio.c    ****         * Input 
+  36:Src/gpio.c    ****         * Output
+  37:Src/gpio.c    ****         * EVENT_OUT
+  38:Src/gpio.c    ****         * EXTI
+  39:Src/gpio.c    **** */
+  40:Src/gpio.c    **** void MX_GPIO_Init(void)
+  41:Src/gpio.c    **** {
+  27              		.loc 1 41 1
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 32
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31 0000 80B5     		push	{r7, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 7, -8
+  35              		.cfi_offset 14, -4
+  36 0002 88B0     		sub	sp, sp, #32
+  37              	.LCFI1:
+  38              		.cfi_def_cfa_offset 40
+  39 0004 00AF     		add	r7, sp, #0
+  40              	.LCFI2:
+  41              		.cfi_def_cfa_register 7
+  42:Src/gpio.c    **** 
+  43:Src/gpio.c    ****   GPIO_InitTypeDef GPIO_InitStruct = {0};
+  42              		.loc 1 43 20
+  43 0006 07F11003 		add	r3, r7, #16
+  44 000a 0022     		movs	r2, #0
+  45 000c 1A60     		str	r2, [r3]
+  46 000e 5A60     		str	r2, [r3, #4]
+  47 0010 9A60     		str	r2, [r3, #8]
+  48 0012 DA60     		str	r2, [r3, #12]
+  49              	.LBB2:
+  44:Src/gpio.c    **** 
+  45:Src/gpio.c    ****   /* GPIO Ports Clock Enable */
+  46:Src/gpio.c    ****   __HAL_RCC_GPIOD_CLK_ENABLE();
+  50              		.loc 1 46 3
+  51 0014 294B     		ldr	r3, .L2
+  52 0016 9B69     		ldr	r3, [r3, #24]
+  53 0018 284A     		ldr	r2, .L2
+  54 001a 43F02003 		orr	r3, r3, #32
+  55 001e 9361     		str	r3, [r2, #24]
+  56 0020 264B     		ldr	r3, .L2
+  57 0022 9B69     		ldr	r3, [r3, #24]
+  58 0024 03F02003 		and	r3, r3, #32
+  59 0028 FB60     		str	r3, [r7, #12]
+  60 002a FB68     		ldr	r3, [r7, #12]
+  61              	.LBE2:
+  62              	.LBB3:
+  47:Src/gpio.c    ****   __HAL_RCC_GPIOA_CLK_ENABLE();
+  63              		.loc 1 47 3
+  64 002c 234B     		ldr	r3, .L2
+  65 002e 9B69     		ldr	r3, [r3, #24]
+  66 0030 224A     		ldr	r2, .L2
+  67 0032 43F00403 		orr	r3, r3, #4
+  68 0036 9361     		str	r3, [r2, #24]
+ARM GAS  C:\Users\Alex\AppData\Local\Temp\ccpdldOp.s 			page 3
+
+
+  69 0038 204B     		ldr	r3, .L2
+  70 003a 9B69     		ldr	r3, [r3, #24]
+  71 003c 03F00403 		and	r3, r3, #4
+  72 0040 BB60     		str	r3, [r7, #8]
+  73 0042 BB68     		ldr	r3, [r7, #8]
+  74              	.LBE3:
+  75              	.LBB4:
+  48:Src/gpio.c    ****   __HAL_RCC_GPIOB_CLK_ENABLE();
+  76              		.loc 1 48 3
+  77 0044 1D4B     		ldr	r3, .L2
+  78 0046 9B69     		ldr	r3, [r3, #24]
+  79 0048 1C4A     		ldr	r2, .L2
+  80 004a 43F00803 		orr	r3, r3, #8
+  81 004e 9361     		str	r3, [r2, #24]
+  82 0050 1A4B     		ldr	r3, .L2
+  83 0052 9B69     		ldr	r3, [r3, #24]
+  84 0054 03F00803 		and	r3, r3, #8
+  85 0058 7B60     		str	r3, [r7, #4]
+  86 005a 7B68     		ldr	r3, [r7, #4]
+  87              	.LBE4:
+  49:Src/gpio.c    **** 
+  50:Src/gpio.c    ****   /*Configure GPIO pin Output Level */
+  51:Src/gpio.c    ****   HAL_GPIO_WritePin(GPIOA, REQ_Pin|FLASH_CS_Pin, GPIO_PIN_RESET);
+  88              		.loc 1 51 3
+  89 005c 0022     		movs	r2, #0
+  90 005e 1421     		movs	r1, #20
+  91 0060 1748     		ldr	r0, .L2+4
+  92 0062 FFF7FEFF 		bl	HAL_GPIO_WritePin
+  52:Src/gpio.c    **** 
+  53:Src/gpio.c    ****   /*Configure GPIO pins : PAPin PAPin */
+  54:Src/gpio.c    ****   GPIO_InitStruct.Pin = REQ_Pin|FLASH_CS_Pin;
+  93              		.loc 1 54 23
+  94 0066 1423     		movs	r3, #20
+  95 0068 3B61     		str	r3, [r7, #16]
+  55:Src/gpio.c    ****   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  96              		.loc 1 55 24
+  97 006a 0123     		movs	r3, #1
+  98 006c 7B61     		str	r3, [r7, #20]
+  56:Src/gpio.c    ****   GPIO_InitStruct.Pull = GPIO_NOPULL;
+  99              		.loc 1 56 24
+ 100 006e 0023     		movs	r3, #0
+ 101 0070 BB61     		str	r3, [r7, #24]
+  57:Src/gpio.c    ****   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+ 102              		.loc 1 57 25
+ 103 0072 0223     		movs	r3, #2
+ 104 0074 FB61     		str	r3, [r7, #28]
+  58:Src/gpio.c    ****   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+ 105              		.loc 1 58 3
+ 106 0076 07F11003 		add	r3, r7, #16
+ 107 007a 1946     		mov	r1, r3
+ 108 007c 1048     		ldr	r0, .L2+4
+ 109 007e FFF7FEFF 		bl	HAL_GPIO_Init
+  59:Src/gpio.c    **** 
+  60:Src/gpio.c    ****   /*Configure GPIO pin : PtPin */
+  61:Src/gpio.c    ****   GPIO_InitStruct.Pin = EN_Pin;
+ 110              		.loc 1 61 23
+ 111 0082 0823     		movs	r3, #8
+ARM GAS  C:\Users\Alex\AppData\Local\Temp\ccpdldOp.s 			page 4
+
+
+ 112 0084 3B61     		str	r3, [r7, #16]
+  62:Src/gpio.c    ****   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+ 113              		.loc 1 62 24
+ 114 0086 0023     		movs	r3, #0
+ 115 0088 7B61     		str	r3, [r7, #20]
+  63:Src/gpio.c    ****   GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 116              		.loc 1 63 24
+ 117 008a 0023     		movs	r3, #0
+ 118 008c BB61     		str	r3, [r7, #24]
+  64:Src/gpio.c    ****   HAL_GPIO_Init(EN_GPIO_Port, &GPIO_InitStruct);
+ 119              		.loc 1 64 3
+ 120 008e 07F11003 		add	r3, r7, #16
+ 121 0092 1946     		mov	r1, r3
+ 122 0094 0A48     		ldr	r0, .L2+4
+ 123 0096 FFF7FEFF 		bl	HAL_GPIO_Init
+  65:Src/gpio.c    **** 
+  66:Src/gpio.c    ****   /*Configure GPIO pin : PtPin */
+  67:Src/gpio.c    ****   GPIO_InitStruct.Pin = Sense_Pin;
+ 124              		.loc 1 67 23
+ 125 009a 4FF40073 		mov	r3, #512
+ 126 009e 3B61     		str	r3, [r7, #16]
+  68:Src/gpio.c    ****   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+ 127              		.loc 1 68 24
+ 128 00a0 0023     		movs	r3, #0
+ 129 00a2 7B61     		str	r3, [r7, #20]
+  69:Src/gpio.c    ****   GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 130              		.loc 1 69 24
+ 131 00a4 0023     		movs	r3, #0
+ 132 00a6 BB61     		str	r3, [r7, #24]
+  70:Src/gpio.c    ****   HAL_GPIO_Init(Sense_GPIO_Port, &GPIO_InitStruct);
+ 133              		.loc 1 70 3
+ 134 00a8 07F11003 		add	r3, r7, #16
+ 135 00ac 1946     		mov	r1, r3
+ 136 00ae 0548     		ldr	r0, .L2+8
+ 137 00b0 FFF7FEFF 		bl	HAL_GPIO_Init
+  71:Src/gpio.c    **** 
+  72:Src/gpio.c    **** }
+ 138              		.loc 1 72 1
+ 139 00b4 00BF     		nop
+ 140 00b6 2037     		adds	r7, r7, #32
+ 141              	.LCFI3:
+ 142              		.cfi_def_cfa_offset 8
+ 143 00b8 BD46     		mov	sp, r7
+ 144              	.LCFI4:
+ 145              		.cfi_def_cfa_register 13
+ 146              		@ sp needed
+ 147 00ba 80BD     		pop	{r7, pc}
+ 148              	.L3:
+ 149              		.align	2
+ 150              	.L2:
+ 151 00bc 00100240 		.word	1073876992
+ 152 00c0 00080140 		.word	1073809408
+ 153 00c4 000C0140 		.word	1073810432
+ 154              		.cfi_endproc
+ 155              	.LFE65:
+ 157              		.text
+ 158              	.Letext0:
+ARM GAS  C:\Users\Alex\AppData\Local\Temp\ccpdldOp.s 			page 5
+
+
+ 159              		.file 2 "c:\\program files\\gnu tools arm embedded patched 64\\8.2.1-1.2-20190119-1237\\arm-none-e
+ 160              		.file 3 "c:\\program files\\gnu tools arm embedded patched 64\\8.2.1-1.2-20190119-1237\\arm-none-e
+ 161              		.file 4 "Drivers/CMSIS/Include/core_cm3.h"
+ 162              		.file 5 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h"
+ 163              		.file 6 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 164              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
+ 165              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h"
+ARM GAS  C:\Users\Alex\AppData\Local\Temp\ccpdldOp.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 gpio.c
+C:\Users\Alex\AppData\Local\Temp\ccpdldOp.s:16     .text.MX_GPIO_Init:0000000000000000 $t
+C:\Users\Alex\AppData\Local\Temp\ccpdldOp.s:24     .text.MX_GPIO_Init:0000000000000000 MX_GPIO_Init
+C:\Users\Alex\AppData\Local\Temp\ccpdldOp.s:151    .text.MX_GPIO_Init:00000000000000bc $d
+
+UNDEFINED SYMBOLS
+HAL_GPIO_WritePin
+HAL_GPIO_Init

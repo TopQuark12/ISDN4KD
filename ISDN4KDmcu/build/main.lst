@@ -1,0 +1,663 @@
+ARM GAS  C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 6
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"main.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.global	writeCount
+  16              		.section	.bss.writeCount,"aw",%nobits
+  17              		.align	2
+  20              	writeCount:
+  21 0000 00000000 		.space	4
+  22              		.global	writeFlag
+  23              		.section	.bss.writeFlag,"aw",%nobits
+  26              	writeFlag:
+  27 0000 00       		.space	1
+  28              		.global	writeVal
+  29              		.section	.bss.writeVal,"aw",%nobits
+  32              	writeVal:
+  33 0000 00       		.space	1
+  34              		.global	readFlag
+  35              		.section	.bss.readFlag,"aw",%nobits
+  38              	readFlag:
+  39 0000 00       		.space	1
+  40              		.comm	device,1,1
+  41              		.comm	readBufferSec0,4096,4
+  42              		.comm	readBufferSec1,4096,4
+  43              		.section	.text.main,"ax",%progbits
+  44              		.align	1
+  45              		.global	main
+  46              		.arch armv7-m
+  47              		.syntax unified
+  48              		.thumb
+  49              		.thumb_func
+  50              		.fpu softvfp
+  52              	main:
+  53              	.LFB65:
+  54              		.file 1 "Src/main.c"
+   1:Src/main.c    **** /* USER CODE BEGIN Header */
+   2:Src/main.c    **** /**
+   3:Src/main.c    ****   ******************************************************************************
+   4:Src/main.c    ****   * @file           : main.c
+   5:Src/main.c    ****   * @brief          : Main program body
+   6:Src/main.c    ****   ******************************************************************************
+   7:Src/main.c    ****   * @attention
+   8:Src/main.c    ****   *
+   9:Src/main.c    ****   * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  10:Src/main.c    ****   * All rights reserved.</center></h2>
+  11:Src/main.c    ****   *
+  12:Src/main.c    ****   * This software component is licensed by ST under BSD 3-Clause license,
+ARM GAS  C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s 			page 2
+
+
+  13:Src/main.c    ****   * the "License"; You may not use this file except in compliance with the
+  14:Src/main.c    ****   * License. You may obtain a copy of the License at:
+  15:Src/main.c    ****   *                        opensource.org/licenses/BSD-3-Clause
+  16:Src/main.c    ****   *
+  17:Src/main.c    ****   ******************************************************************************
+  18:Src/main.c    ****   */
+  19:Src/main.c    **** /* USER CODE END Header */
+  20:Src/main.c    **** 
+  21:Src/main.c    **** /* Includes ------------------------------------------------------------------*/
+  22:Src/main.c    **** #include "main.h"
+  23:Src/main.c    **** #include "spi.h"
+  24:Src/main.c    **** #include "gpio.h"
+  25:Src/main.c    **** 
+  26:Src/main.c    **** /* Private includes ----------------------------------------------------------*/
+  27:Src/main.c    **** /* USER CODE BEGIN Includes */
+  28:Src/main.c    **** #include "w25qxx.h"
+  29:Src/main.c    **** /* USER CODE END Includes */
+  30:Src/main.c    **** 
+  31:Src/main.c    **** /* Private typedef -----------------------------------------------------------*/
+  32:Src/main.c    **** /* USER CODE BEGIN PTD */
+  33:Src/main.c    **** 
+  34:Src/main.c    **** /* USER CODE END PTD */
+  35:Src/main.c    **** 
+  36:Src/main.c    **** /* Private define ------------------------------------------------------------*/
+  37:Src/main.c    **** /* USER CODE BEGIN PD */
+  38:Src/main.c    **** /* USER CODE END PD */
+  39:Src/main.c    **** 
+  40:Src/main.c    **** /* Private macro -------------------------------------------------------------*/
+  41:Src/main.c    **** /* USER CODE BEGIN PM */
+  42:Src/main.c    **** 
+  43:Src/main.c    **** /* USER CODE END PM */
+  44:Src/main.c    **** 
+  45:Src/main.c    **** /* Private variables ---------------------------------------------------------*/
+  46:Src/main.c    **** 
+  47:Src/main.c    **** /* USER CODE BEGIN PV */
+  48:Src/main.c    **** volatile uint32_t writeCount = 0;
+  49:Src/main.c    **** volatile uint8_t writeFlag = 0;
+  50:Src/main.c    **** volatile uint8_t writeVal = 0;
+  51:Src/main.c    **** volatile uint8_t readFlag = 0;
+  52:Src/main.c    **** uint8_t device;
+  53:Src/main.c    **** uint8_t readBufferSec0[4096];
+  54:Src/main.c    **** uint8_t readBufferSec1[4096];
+  55:Src/main.c    **** /* USER CODE END PV */
+  56:Src/main.c    **** 
+  57:Src/main.c    **** /* Private function prototypes -----------------------------------------------*/
+  58:Src/main.c    **** void SystemClock_Config(void);
+  59:Src/main.c    **** /* USER CODE BEGIN PFP */
+  60:Src/main.c    **** 
+  61:Src/main.c    **** /* USER CODE END PFP */
+  62:Src/main.c    **** 
+  63:Src/main.c    **** /* Private user code ---------------------------------------------------------*/
+  64:Src/main.c    **** /* USER CODE BEGIN 0 */
+  65:Src/main.c    **** 
+  66:Src/main.c    **** /* USER CODE END 0 */
+  67:Src/main.c    **** 
+  68:Src/main.c    **** /**
+  69:Src/main.c    ****   * @brief  The application entry point.
+ARM GAS  C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s 			page 3
+
+
+  70:Src/main.c    ****   * @retval int
+  71:Src/main.c    ****   */
+  72:Src/main.c    **** int main(void)
+  73:Src/main.c    **** {
+  55              		.loc 1 73 1
+  56              		.cfi_startproc
+  57              		@ args = 0, pretend = 0, frame = 0
+  58              		@ frame_needed = 1, uses_anonymous_args = 0
+  59 0000 80B5     		push	{r7, lr}
+  60              	.LCFI0:
+  61              		.cfi_def_cfa_offset 8
+  62              		.cfi_offset 7, -8
+  63              		.cfi_offset 14, -4
+  64 0002 00AF     		add	r7, sp, #0
+  65              	.LCFI1:
+  66              		.cfi_def_cfa_register 7
+  74:Src/main.c    ****   /* USER CODE BEGIN 1 */
+  75:Src/main.c    **** 
+  76:Src/main.c    ****   /* USER CODE END 1 */
+  77:Src/main.c    ****   
+  78:Src/main.c    **** 
+  79:Src/main.c    ****   /* MCU Configuration--------------------------------------------------------*/
+  80:Src/main.c    **** 
+  81:Src/main.c    ****   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  82:Src/main.c    ****   HAL_Init();
+  67              		.loc 1 82 3
+  68 0004 FFF7FEFF 		bl	HAL_Init
+  83:Src/main.c    **** 
+  84:Src/main.c    ****   /* USER CODE BEGIN Init */
+  85:Src/main.c    **** 
+  86:Src/main.c    ****   /* USER CODE END Init */
+  87:Src/main.c    **** 
+  88:Src/main.c    ****   /* Configure the system clock */
+  89:Src/main.c    ****   SystemClock_Config();
+  69              		.loc 1 89 3
+  70 0008 FFF7FEFF 		bl	SystemClock_Config
+  90:Src/main.c    **** 
+  91:Src/main.c    ****   /* USER CODE BEGIN SysInit */
+  92:Src/main.c    **** 
+  93:Src/main.c    ****   /* USER CODE END SysInit */
+  94:Src/main.c    **** 
+  95:Src/main.c    ****   /* Initialize all configured peripherals */
+  96:Src/main.c    ****   MX_GPIO_Init();
+  71              		.loc 1 96 3
+  72 000c FFF7FEFF 		bl	MX_GPIO_Init
+  97:Src/main.c    ****   MX_SPI1_Init();
+  73              		.loc 1 97 3
+  74 0010 FFF7FEFF 		bl	MX_SPI1_Init
+  98:Src/main.c    ****   /* USER CODE BEGIN 2 */
+  99:Src/main.c    ****   device = HAL_GPIO_ReadPin(Sense_GPIO_Port, Sense_Pin);
+  75              		.loc 1 99 12
+  76 0014 4FF40071 		mov	r1, #512
+  77 0018 3848     		ldr	r0, .L11
+  78 001a FFF7FEFF 		bl	HAL_GPIO_ReadPin
+  79 001e 0346     		mov	r3, r0
+  80 0020 1A46     		mov	r2, r3
+  81              		.loc 1 99 10
+ARM GAS  C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s 			page 4
+
+
+  82 0022 374B     		ldr	r3, .L11+4
+  83 0024 1A70     		strb	r2, [r3]
+ 100:Src/main.c    **** 
+ 101:Src/main.c    ****   HAL_GPIO_WritePin(REQ_GPIO_Port, REQ_Pin, SET);
+  84              		.loc 1 101 3
+  85 0026 0122     		movs	r2, #1
+  86 0028 0421     		movs	r1, #4
+  87 002a 3648     		ldr	r0, .L11+8
+  88 002c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 102:Src/main.c    ****   while (!HAL_GPIO_ReadPin(EN_GPIO_Port, EN_Pin))
+  89              		.loc 1 102 9
+  90 0030 00BF     		nop
+  91              	.L2:
+  92              		.loc 1 102 11 discriminator 1
+  93 0032 0821     		movs	r1, #8
+  94 0034 3348     		ldr	r0, .L11+8
+  95 0036 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+  96 003a 0346     		mov	r3, r0
+  97              		.loc 1 102 9 discriminator 1
+  98 003c 002B     		cmp	r3, #0
+  99 003e F8D0     		beq	.L2
+ 103:Src/main.c    ****   {
+ 104:Src/main.c    ****     /* code */
+ 105:Src/main.c    ****   }
+ 106:Src/main.c    ****   W25qxx_Init();
+ 100              		.loc 1 106 3
+ 101 0040 FFF7FEFF 		bl	W25qxx_Init
+ 107:Src/main.c    ****   HAL_GPIO_WritePin(REQ_GPIO_Port, REQ_Pin, RESET);
+ 102              		.loc 1 107 3
+ 103 0044 0022     		movs	r2, #0
+ 104 0046 0421     		movs	r1, #4
+ 105 0048 2E48     		ldr	r0, .L11+8
+ 106 004a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 107              	.L10:
+ 108:Src/main.c    **** 
+ 109:Src/main.c    ****   /* USER CODE END 2 */
+ 110:Src/main.c    **** 
+ 111:Src/main.c    ****   /* Infinite loop */
+ 112:Src/main.c    ****   /* USER CODE BEGIN WHILE */
+ 113:Src/main.c    ****   while (1)
+ 114:Src/main.c    ****   {
+ 115:Src/main.c    ****     /* USER CODE END WHILE */
+ 116:Src/main.c    **** 
+ 117:Src/main.c    ****     /* USER CODE BEGIN 3 */
+ 118:Src/main.c    ****     while (!writeFlag && !readFlag)
+ 108              		.loc 1 118 11
+ 109 004e 00BF     		nop
+ 110              	.L4:
+ 111              		.loc 1 118 12 discriminator 2
+ 112 0050 2D4B     		ldr	r3, .L11+12
+ 113 0052 1B78     		ldrb	r3, [r3]
+ 114 0054 DBB2     		uxtb	r3, r3
+ 115              		.loc 1 118 11 discriminator 2
+ 116 0056 002B     		cmp	r3, #0
+ 117 0058 04D1     		bne	.L3
+ 118              		.loc 1 118 26 discriminator 1
+ 119 005a 2C4B     		ldr	r3, .L11+16
+ARM GAS  C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s 			page 5
+
+
+ 120 005c 1B78     		ldrb	r3, [r3]
+ 121 005e DBB2     		uxtb	r3, r3
+ 122              		.loc 1 118 23 discriminator 1
+ 123 0060 002B     		cmp	r3, #0
+ 124 0062 F5D0     		beq	.L4
+ 125              	.L3:
+ 119:Src/main.c    ****     {
+ 120:Src/main.c    ****       /* code */
+ 121:Src/main.c    ****     }
+ 122:Src/main.c    **** 
+ 123:Src/main.c    ****     HAL_GPIO_WritePin(REQ_GPIO_Port, REQ_Pin, SET);
+ 126              		.loc 1 123 5
+ 127 0064 0122     		movs	r2, #1
+ 128 0066 0421     		movs	r1, #4
+ 129 0068 2648     		ldr	r0, .L11+8
+ 130 006a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 124:Src/main.c    ****     while (!HAL_GPIO_ReadPin(EN_GPIO_Port, EN_Pin))
+ 131              		.loc 1 124 11
+ 132 006e 00BF     		nop
+ 133              	.L5:
+ 134              		.loc 1 124 13 discriminator 1
+ 135 0070 0821     		movs	r1, #8
+ 136 0072 2448     		ldr	r0, .L11+8
+ 137 0074 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 138 0078 0346     		mov	r3, r0
+ 139              		.loc 1 124 11 discriminator 1
+ 140 007a 002B     		cmp	r3, #0
+ 141 007c F8D0     		beq	.L5
+ 125:Src/main.c    ****     {
+ 126:Src/main.c    ****       /* code */
+ 127:Src/main.c    ****     }
+ 128:Src/main.c    ****     
+ 129:Src/main.c    ****     if (writeFlag)
+ 142              		.loc 1 129 9
+ 143 007e 224B     		ldr	r3, .L11+12
+ 144 0080 1B78     		ldrb	r3, [r3]
+ 145 0082 DBB2     		uxtb	r3, r3
+ 146              		.loc 1 129 8
+ 147 0084 002B     		cmp	r3, #0
+ 148 0086 27D0     		beq	.L6
+ 130:Src/main.c    ****     {
+ 131:Src/main.c    ****       writeFlag = 0;
+ 149              		.loc 1 131 17
+ 150 0088 1F4B     		ldr	r3, .L11+12
+ 151 008a 0022     		movs	r2, #0
+ 152 008c 1A70     		strb	r2, [r3]
+ 132:Src/main.c    **** 
+ 133:Src/main.c    ****       if (writeCount == 4096) {
+ 153              		.loc 1 133 22
+ 154 008e 204B     		ldr	r3, .L11+20
+ 155 0090 1B68     		ldr	r3, [r3]
+ 156              		.loc 1 133 10
+ 157 0092 B3F5805F 		cmp	r3, #4096
+ 158 0096 02D1     		bne	.L7
+ 134:Src/main.c    ****         writeCount = 0;
+ 159              		.loc 1 134 20
+ 160 0098 1D4B     		ldr	r3, .L11+20
+ARM GAS  C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s 			page 6
+
+
+ 161 009a 0022     		movs	r2, #0
+ 162 009c 1A60     		str	r2, [r3]
+ 163              	.L7:
+ 135:Src/main.c    ****       }
+ 136:Src/main.c    **** 
+ 137:Src/main.c    ****       if (writeCount == 0) {
+ 164              		.loc 1 137 22
+ 165 009e 1C4B     		ldr	r3, .L11+20
+ 166 00a0 1B68     		ldr	r3, [r3]
+ 167              		.loc 1 137 10
+ 168 00a2 002B     		cmp	r3, #0
+ 169 00a4 04D1     		bne	.L8
+ 138:Src/main.c    ****         W25qxx_EraseSector(device);
+ 170              		.loc 1 138 9
+ 171 00a6 164B     		ldr	r3, .L11+4
+ 172 00a8 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 173 00aa 1846     		mov	r0, r3
+ 174 00ac FFF7FEFF 		bl	W25qxx_EraseSector
+ 175              	.L8:
+ 139:Src/main.c    ****       }
+ 140:Src/main.c    **** 
+ 141:Src/main.c    ****       W25qxx_WriteByte(writeVal, writeCount + device * 0x1000);
+ 176              		.loc 1 141 7
+ 177 00b0 184B     		ldr	r3, .L11+24
+ 178 00b2 1B78     		ldrb	r3, [r3]
+ 179 00b4 DAB2     		uxtb	r2, r3
+ 180              		.loc 1 141 54
+ 181 00b6 124B     		ldr	r3, .L11+4
+ 182 00b8 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 183 00ba 1B03     		lsls	r3, r3, #12
+ 184 00bc 1946     		mov	r1, r3
+ 185              		.loc 1 141 7
+ 186 00be 144B     		ldr	r3, .L11+20
+ 187 00c0 1B68     		ldr	r3, [r3]
+ 188 00c2 0B44     		add	r3, r3, r1
+ 189 00c4 1946     		mov	r1, r3
+ 190 00c6 1046     		mov	r0, r2
+ 191 00c8 FFF7FEFF 		bl	W25qxx_WriteByte
+ 142:Src/main.c    ****       writeCount++;
+ 192              		.loc 1 142 17
+ 193 00cc 104B     		ldr	r3, .L11+20
+ 194 00ce 1B68     		ldr	r3, [r3]
+ 195 00d0 0133     		adds	r3, r3, #1
+ 196 00d2 0F4A     		ldr	r2, .L11+20
+ 197 00d4 1360     		str	r3, [r2]
+ 198 00d6 0BE0     		b	.L9
+ 199              	.L6:
+ 143:Src/main.c    **** 
+ 144:Src/main.c    ****     } else {
+ 145:Src/main.c    **** 
+ 146:Src/main.c    ****       readFlag = 0;
+ 200              		.loc 1 146 16
+ 201 00d8 0C4B     		ldr	r3, .L11+16
+ 202 00da 0022     		movs	r2, #0
+ 203 00dc 1A70     		strb	r2, [r3]
+ 147:Src/main.c    **** 
+ 148:Src/main.c    ****       W25qxx_ReadSector(readBufferSec0, device, 0, sizeof(readBufferSec0));
+ARM GAS  C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s 			page 7
+
+
+ 204              		.loc 1 148 7
+ 205 00de 084B     		ldr	r3, .L11+4
+ 206 00e0 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 207 00e2 1946     		mov	r1, r3
+ 208 00e4 4FF48053 		mov	r3, #4096
+ 209 00e8 0022     		movs	r2, #0
+ 210 00ea 0B48     		ldr	r0, .L11+28
+ 211 00ec FFF7FEFF 		bl	W25qxx_ReadSector
+ 212              	.L9:
+ 149:Src/main.c    ****       // W25qxx_ReadSector(readBufferSec1, 1, 0, sizeof(readBufferSec1));
+ 150:Src/main.c    **** 
+ 151:Src/main.c    ****     }    
+ 152:Src/main.c    **** 
+ 153:Src/main.c    ****     HAL_GPIO_WritePin(REQ_GPIO_Port, REQ_Pin, RESET);
+ 213              		.loc 1 153 5
+ 214 00f0 0022     		movs	r2, #0
+ 215 00f2 0421     		movs	r1, #4
+ 216 00f4 0348     		ldr	r0, .L11+8
+ 217 00f6 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 118:Src/main.c    ****     {
+ 218              		.loc 1 118 11
+ 219 00fa A8E7     		b	.L10
+ 220              	.L12:
+ 221              		.align	2
+ 222              	.L11:
+ 223 00fc 000C0140 		.word	1073810432
+ 224 0100 00000000 		.word	device
+ 225 0104 00080140 		.word	1073809408
+ 226 0108 00000000 		.word	writeFlag
+ 227 010c 00000000 		.word	readFlag
+ 228 0110 00000000 		.word	writeCount
+ 229 0114 00000000 		.word	writeVal
+ 230 0118 00000000 		.word	readBufferSec0
+ 231              		.cfi_endproc
+ 232              	.LFE65:
+ 234              		.section	.text.SystemClock_Config,"ax",%progbits
+ 235              		.align	1
+ 236              		.global	SystemClock_Config
+ 237              		.syntax unified
+ 238              		.thumb
+ 239              		.thumb_func
+ 240              		.fpu softvfp
+ 242              	SystemClock_Config:
+ 243              	.LFB66:
+ 154:Src/main.c    **** 
+ 155:Src/main.c    ****   }
+ 156:Src/main.c    ****   /* USER CODE END 3 */
+ 157:Src/main.c    **** }
+ 158:Src/main.c    **** 
+ 159:Src/main.c    **** /**
+ 160:Src/main.c    ****   * @brief System Clock Configuration
+ 161:Src/main.c    ****   * @retval None
+ 162:Src/main.c    ****   */
+ 163:Src/main.c    **** void SystemClock_Config(void)
+ 164:Src/main.c    **** {
+ 244              		.loc 1 164 1
+ 245              		.cfi_startproc
+ARM GAS  C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s 			page 8
+
+
+ 246              		@ args = 0, pretend = 0, frame = 64
+ 247              		@ frame_needed = 1, uses_anonymous_args = 0
+ 248 0000 80B5     		push	{r7, lr}
+ 249              	.LCFI2:
+ 250              		.cfi_def_cfa_offset 8
+ 251              		.cfi_offset 7, -8
+ 252              		.cfi_offset 14, -4
+ 253 0002 90B0     		sub	sp, sp, #64
+ 254              	.LCFI3:
+ 255              		.cfi_def_cfa_offset 72
+ 256 0004 00AF     		add	r7, sp, #0
+ 257              	.LCFI4:
+ 258              		.cfi_def_cfa_register 7
+ 165:Src/main.c    ****   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+ 259              		.loc 1 165 22
+ 260 0006 07F11803 		add	r3, r7, #24
+ 261 000a 2822     		movs	r2, #40
+ 262 000c 0021     		movs	r1, #0
+ 263 000e 1846     		mov	r0, r3
+ 264 0010 FFF7FEFF 		bl	memset
+ 166:Src/main.c    ****   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+ 265              		.loc 1 166 22
+ 266 0014 3B1D     		adds	r3, r7, #4
+ 267 0016 0022     		movs	r2, #0
+ 268 0018 1A60     		str	r2, [r3]
+ 269 001a 5A60     		str	r2, [r3, #4]
+ 270 001c 9A60     		str	r2, [r3, #8]
+ 271 001e DA60     		str	r2, [r3, #12]
+ 272 0020 1A61     		str	r2, [r3, #16]
+ 167:Src/main.c    **** 
+ 168:Src/main.c    ****   /** Initializes the CPU, AHB and APB busses clocks 
+ 169:Src/main.c    ****   */
+ 170:Src/main.c    ****   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+ 273              		.loc 1 170 36
+ 274 0022 0123     		movs	r3, #1
+ 275 0024 BB61     		str	r3, [r7, #24]
+ 171:Src/main.c    ****   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+ 276              		.loc 1 171 30
+ 277 0026 4FF48033 		mov	r3, #65536
+ 278 002a FB61     		str	r3, [r7, #28]
+ 172:Src/main.c    ****   RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+ 279              		.loc 1 172 36
+ 280 002c 0023     		movs	r3, #0
+ 281 002e 3B62     		str	r3, [r7, #32]
+ 173:Src/main.c    ****   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+ 282              		.loc 1 173 30
+ 283 0030 0123     		movs	r3, #1
+ 284 0032 BB62     		str	r3, [r7, #40]
+ 174:Src/main.c    ****   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+ 285              		.loc 1 174 34
+ 286 0034 0223     		movs	r3, #2
+ 287 0036 7B63     		str	r3, [r7, #52]
+ 175:Src/main.c    ****   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+ 288              		.loc 1 175 35
+ 289 0038 4FF48033 		mov	r3, #65536
+ 290 003c BB63     		str	r3, [r7, #56]
+ 176:Src/main.c    ****   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
+ARM GAS  C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s 			page 9
+
+
+ 291              		.loc 1 176 32
+ 292 003e 4FF4E013 		mov	r3, #1835008
+ 293 0042 FB63     		str	r3, [r7, #60]
+ 177:Src/main.c    ****   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+ 294              		.loc 1 177 7
+ 295 0044 07F11803 		add	r3, r7, #24
+ 296 0048 1846     		mov	r0, r3
+ 297 004a FFF7FEFF 		bl	HAL_RCC_OscConfig
+ 298 004e 0346     		mov	r3, r0
+ 299              		.loc 1 177 6
+ 300 0050 002B     		cmp	r3, #0
+ 301 0052 01D0     		beq	.L14
+ 178:Src/main.c    ****   {
+ 179:Src/main.c    ****     Error_Handler();
+ 302              		.loc 1 179 5
+ 303 0054 FFF7FEFF 		bl	Error_Handler
+ 304              	.L14:
+ 180:Src/main.c    ****   }
+ 181:Src/main.c    ****   /** Initializes the CPU, AHB and APB busses clocks 
+ 182:Src/main.c    ****   */
+ 183:Src/main.c    ****   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+ 305              		.loc 1 183 31
+ 306 0058 0F23     		movs	r3, #15
+ 307 005a 7B60     		str	r3, [r7, #4]
+ 184:Src/main.c    ****                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+ 185:Src/main.c    ****   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+ 308              		.loc 1 185 34
+ 309 005c 0223     		movs	r3, #2
+ 310 005e BB60     		str	r3, [r7, #8]
+ 186:Src/main.c    ****   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+ 311              		.loc 1 186 35
+ 312 0060 0023     		movs	r3, #0
+ 313 0062 FB60     		str	r3, [r7, #12]
+ 187:Src/main.c    ****   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+ 314              		.loc 1 187 36
+ 315 0064 4FF48063 		mov	r3, #1024
+ 316 0068 3B61     		str	r3, [r7, #16]
+ 188:Src/main.c    ****   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+ 317              		.loc 1 188 36
+ 318 006a 0023     		movs	r3, #0
+ 319 006c 7B61     		str	r3, [r7, #20]
+ 189:Src/main.c    **** 
+ 190:Src/main.c    ****   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+ 320              		.loc 1 190 7
+ 321 006e 3B1D     		adds	r3, r7, #4
+ 322 0070 0221     		movs	r1, #2
+ 323 0072 1846     		mov	r0, r3
+ 324 0074 FFF7FEFF 		bl	HAL_RCC_ClockConfig
+ 325 0078 0346     		mov	r3, r0
+ 326              		.loc 1 190 6
+ 327 007a 002B     		cmp	r3, #0
+ 328 007c 01D0     		beq	.L16
+ 191:Src/main.c    ****   {
+ 192:Src/main.c    ****     Error_Handler();
+ 329              		.loc 1 192 5
+ 330 007e FFF7FEFF 		bl	Error_Handler
+ 331              	.L16:
+ARM GAS  C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s 			page 10
+
+
+ 193:Src/main.c    ****   }
+ 194:Src/main.c    **** }
+ 332              		.loc 1 194 1
+ 333 0082 00BF     		nop
+ 334 0084 4037     		adds	r7, r7, #64
+ 335              	.LCFI5:
+ 336              		.cfi_def_cfa_offset 8
+ 337 0086 BD46     		mov	sp, r7
+ 338              	.LCFI6:
+ 339              		.cfi_def_cfa_register 13
+ 340              		@ sp needed
+ 341 0088 80BD     		pop	{r7, pc}
+ 342              		.cfi_endproc
+ 343              	.LFE66:
+ 345              		.section	.text.Error_Handler,"ax",%progbits
+ 346              		.align	1
+ 347              		.global	Error_Handler
+ 348              		.syntax unified
+ 349              		.thumb
+ 350              		.thumb_func
+ 351              		.fpu softvfp
+ 353              	Error_Handler:
+ 354              	.LFB67:
+ 195:Src/main.c    **** 
+ 196:Src/main.c    **** /* USER CODE BEGIN 4 */
+ 197:Src/main.c    **** 
+ 198:Src/main.c    **** /* USER CODE END 4 */
+ 199:Src/main.c    **** 
+ 200:Src/main.c    **** /**
+ 201:Src/main.c    ****   * @brief  This function is executed in case of error occurrence.
+ 202:Src/main.c    ****   * @retval None
+ 203:Src/main.c    ****   */
+ 204:Src/main.c    **** void Error_Handler(void)
+ 205:Src/main.c    **** {
+ 355              		.loc 1 205 1
+ 356              		.cfi_startproc
+ 357              		@ args = 0, pretend = 0, frame = 0
+ 358              		@ frame_needed = 1, uses_anonymous_args = 0
+ 359              		@ link register save eliminated.
+ 360 0000 80B4     		push	{r7}
+ 361              	.LCFI7:
+ 362              		.cfi_def_cfa_offset 4
+ 363              		.cfi_offset 7, -4
+ 364 0002 00AF     		add	r7, sp, #0
+ 365              	.LCFI8:
+ 366              		.cfi_def_cfa_register 7
+ 206:Src/main.c    ****   /* USER CODE BEGIN Error_Handler_Debug */
+ 207:Src/main.c    ****   /* User can add his own implementation to report the HAL error return state */
+ 208:Src/main.c    **** 
+ 209:Src/main.c    ****   /* USER CODE END Error_Handler_Debug */
+ 210:Src/main.c    **** }
+ 367              		.loc 1 210 1
+ 368 0004 00BF     		nop
+ 369 0006 BD46     		mov	sp, r7
+ 370              	.LCFI9:
+ 371              		.cfi_def_cfa_register 13
+ 372              		@ sp needed
+ARM GAS  C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s 			page 11
+
+
+ 373 0008 80BC     		pop	{r7}
+ 374              	.LCFI10:
+ 375              		.cfi_restore 7
+ 376              		.cfi_def_cfa_offset 0
+ 377 000a 7047     		bx	lr
+ 378              		.cfi_endproc
+ 379              	.LFE67:
+ 381              		.text
+ 382              	.Letext0:
+ 383              		.file 2 "c:\\program files\\gnu tools arm embedded patched 64\\8.2.1-1.2-20190119-1237\\arm-none-e
+ 384              		.file 3 "c:\\program files\\gnu tools arm embedded patched 64\\8.2.1-1.2-20190119-1237\\arm-none-e
+ 385              		.file 4 "Drivers/CMSIS/Include/core_cm3.h"
+ 386              		.file 5 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h"
+ 387              		.file 6 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 388              		.file 7 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h"
+ 389              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 390              		.file 9 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h"
+ 391              		.file 10 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h"
+ 392              		.file 11 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 393              		.file 12 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h"
+ 394              		.file 13 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h"
+ 395              		.file 14 "Inc/spi.h"
+ 396              		.file 15 "Inc/w25qxx.h"
+ARM GAS  C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s 			page 12
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s:20     .bss.writeCount:0000000000000000 writeCount
+C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s:17     .bss.writeCount:0000000000000000 $d
+C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s:26     .bss.writeFlag:0000000000000000 writeFlag
+C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s:27     .bss.writeFlag:0000000000000000 $d
+C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s:32     .bss.writeVal:0000000000000000 writeVal
+C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s:33     .bss.writeVal:0000000000000000 $d
+C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s:38     .bss.readFlag:0000000000000000 readFlag
+C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s:39     .bss.readFlag:0000000000000000 $d
+                            *COM*:0000000000000001 device
+                            *COM*:0000000000001000 readBufferSec0
+                            *COM*:0000000000001000 readBufferSec1
+C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s:44     .text.main:0000000000000000 $t
+C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s:52     .text.main:0000000000000000 main
+C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s:242    .text.SystemClock_Config:0000000000000000 SystemClock_Config
+C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s:223    .text.main:00000000000000fc $d
+C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s:235    .text.SystemClock_Config:0000000000000000 $t
+C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s:353    .text.Error_Handler:0000000000000000 Error_Handler
+C:\Users\Alex\AppData\Local\Temp\ccfgoAek.s:346    .text.Error_Handler:0000000000000000 $t
+
+UNDEFINED SYMBOLS
+HAL_Init
+MX_GPIO_Init
+MX_SPI1_Init
+HAL_GPIO_ReadPin
+HAL_GPIO_WritePin
+W25qxx_Init
+W25qxx_EraseSector
+W25qxx_WriteByte
+W25qxx_ReadSector
+memset
+HAL_RCC_OscConfig
+HAL_RCC_ClockConfig
