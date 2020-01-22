@@ -22,7 +22,7 @@
 
 module systemTop(    
     input clk,
-    input btnC,
+//    input btnC,
     input [15:0] sw,
     output [15:0] led,
     
@@ -42,7 +42,18 @@ module systemTop(
        
     );
     
-    reg [1:0] enReg ;
+//    reg [1:0] enReg ;
+
+    wire [1:0] nCS;
+    
+    assign nWPd = 1;
+    assign nRSTd = 1;
+    
+    assign nCS[0] = !CS[0];
+    assign nCS[1] = !CS[1];
+    
+    assign MISO[0] = MISOd;
+    assign MISO[1] = MISOd;
     
     assign led[15:0] = sw[15:0];
     
@@ -51,24 +62,24 @@ module systemTop(
         .prio(sw[1:0]),
         .clk(clk),
         .req(REQ[1:0]),
-        .using(CS[1:0]),
-        .en(enReg[1:0])
+        .using(nCS[1:0]),
+        .en(enOUT[1:0])
     );
     
     mux MOSImux (
-        .en(enReg[1:0]),
+        .en(enOUT[1:0]),
         .muxIn(MOSI[1:0]),
         .muxOut(MOSId)        
     );
     
     mux CSmux (
-        .en(enReg[1:0]),
+        .en(enOUT[1:0]),
         .muxIn(CS[1:0]),
         .muxOut(CSd) 
     );
     
     mux CLKmux(
-        .en(enReg[1:0]),
+        .en(enOUT[1:0]),
         .muxIn(CLK[1:0]),
         .muxOut(CLKd) 
     );

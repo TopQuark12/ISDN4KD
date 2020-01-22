@@ -17,8 +17,8 @@ proc create_report { reportName command } {
     send_msg_id runtcl-5 warning "$msg"
   }
 }
-set_msg_config -id {HDL 9-1061} -limit 100000
-set_msg_config -id {HDL 9-1654} -limit 100000
+set_param chipscope.maxJobs 4
+set_param xicom.use_bs_reader 1
 create_project -in_memory -part xc7a35tcpg236-1
 
 set_param project.singleFileAddWarning.threshold 0
@@ -34,7 +34,7 @@ set_property ip_output_repo c:/FPGA/ISDN4KDproj/ISDN4KDproj.cache/ip [current_pr
 set_property ip_cache_permissions {read write} [current_project]
 read_verilog -library xil_defaultlib {
   C:/FPGA/ISDN4KDproj/ISDN4KDproj.srcs/sources_1/new/arbiter.v
-  C:/FPGA/ISDN4KDproj/ISDN4KDproj.srcs/sources_1/new/spiGen.v
+  C:/FPGA/ISDN4KDproj/ISDN4KDproj.srcs/sources_1/new/mux.v
   C:/FPGA/ISDN4KDproj/ISDN4KDproj.srcs/sources_1/new/systemTop.v
 }
 # Mark all dcp files as not used in implementation to prevent them from being
